@@ -1,7 +1,7 @@
 RITx: CYBER502x Computer Forensics - Personal study notes
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-This are my personal notes taken during the course ` RITx: CYBER502x Computer Forensics <https://www.edx.org/course/computer-forensics/>`_ at `edx.org <https://www.edx.org/>`_.
+This are my personal notes taken during the course `RITx: CYBER502x Computer Forensics <https://www.edx.org/course/computer-forensics/>`_ at `edx.org <https://www.edx.org/>`_.
 
 * `CYBER501x Cybersecurity Fundamentals notes <https://github.com/ricco386/CYBER501x-Cybersecurity-Fundamentals>`_
 * `CYBER502x Computer Forensics notes <https://github.com/ricco386/CYBER502x-Computer-Forensics>`_
