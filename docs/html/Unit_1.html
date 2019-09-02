@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Unit 1 &mdash; RITx: CYBER502x Computer Forensics  documentation</title>
+  <title>Unit 1 - Computer Forensics Fundamentals &mdash; RITx: CYBER502x Computer Forensics  documentation</title>
   
 
   
@@ -81,8 +81,15 @@
             
               <p class="caption"><span class="caption-text">Contents:</span></p>
 <ul class="current">
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Unit 1</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#forensic-investigation-procedure">Forensic Investigation Procedure</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Unit 1 - Computer Forensics Fundamentals</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#computer-forensics-concepts-and-types">Computer Forensics Concepts and Types</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#forensic-investigation-procedure">Forensic Investigation Procedure</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#should-we-turn-the-system-off">Should we turn the system off?</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#data-acquisition">Data Acquisition</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#data-preservation">Data Preservation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#data-analysis-and-report">Data Analysis and Report</a></li>
 </ul>
 </li>
 </ul>
@@ -130,7 +137,7 @@
     
       <li><a href="index.html">Docs</a> &raquo;</li>
         
-      <li>Unit 1</li>
+      <li>Unit 1 - Computer Forensics Fundamentals</li>
     
     
       <li class="wy-breadcrumbs-aside">
@@ -149,17 +156,55 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="unit-1">
-<h1>Unit 1<a class="headerlink" href="#unit-1" title="Permalink to this headline">¶</a></h1>
-<p>The evidence may reside in computer systems, computer networks, computer media, computer peripherals – basically everywhere.
-Data can be in one of the three states: At rest, which means stored in a computer drive, the Cloud, or a USB drive, etc, a mobile phone; data in use, which means data is in a computer’s memory currently in use; or data in transit, which means moving through a network.</p>
+  <div class="section" id="unit-1-computer-forensics-fundamentals">
+<h1>Unit 1 - Computer Forensics Fundamentals<a class="headerlink" href="#unit-1-computer-forensics-fundamentals" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="computer-forensics-concepts-and-types">
+<h2>Computer Forensics Concepts and Types<a class="headerlink" href="#computer-forensics-concepts-and-types" title="Permalink to this headline">¶</a></h2>
+<p>Computer forensic investigators use forensic tools and follow appropriate procedures to collect, preserve, analyze, and report admissible evidence to court providing his or her critical judgments of exactly what has happened.</p>
+<p>The evidence may reside in computer systems, computer networks, computer media, computer peripherals – basically everywhere.</p>
+<p>Data can be in one of the three states:</p>
+<ul class="simple">
+<li><p>at rest, which means stored in a computer drive, the Cloud, or a USB drive, etc, a mobile phone</p></li>
+<li><p>data in use, which means data is in a computer’s memory currently in use</p></li>
+<li><p>data in transit, which means moving through a network</p></li>
+</ul>
 <p><strong>System forensics</strong> focus on evidence from volatile data, such as data in memory, and non-volatile data, which resides in hard drives; computer discs;, floppy discs; magnetic tapes; zip and the JAZ discs; log files;</p>
 <p><strong>Network forensics</strong> determines what happened on a system based on network traffic study, such as timeline analysis, IP address, or contents of the packets. This task is technically challenging since this evidence is often transient and does not last as long as stored media.</p>
 <p><strong>Cloud forensics</strong> is an emerging area focusing on Cloud-based evidence, such as Google Drives, web-based email stored on servers owned by a third party.</p>
 <p><strong>Anti-digital forensics or ADF</strong>, which are technologies designed to thwart discovery of such information. ADF approaches aim to manipulate, erase, or obfuscate digital data to make forensic examination difficult, time-consuming, or virtually impossible.</p>
 <p><strong>Expert witness</strong> present in court to judges, attorneys, juries, and other attendants to state their findings, opinions, and conclusions within the bounds of the trial.</p>
+</div>
 <div class="section" id="forensic-investigation-procedure">
 <h2>Forensic Investigation Procedure<a class="headerlink" href="#forensic-investigation-procedure" title="Permalink to this headline">¶</a></h2>
+<p>When a computer incident is confirmed, forensic investigation starts. We should follow the company’s incident response policies and procedures to decide whether turn off the suspect machine immediately or not.</p>
+<div class="section" id="should-we-turn-the-system-off">
+<h3>Should we turn the system off?<a class="headerlink" href="#should-we-turn-the-system-off" title="Permalink to this headline">¶</a></h3>
+<p>If we turn the system off, we will lose computer memory and volatile data, such as logged-in users, PCP connections, and the running processes, etc. If possible, we should collect the volatile data before turning off the machine.</p>
+<p><strong>If you turn off the system gracefully</strong>, it ensures the <strong>system remains in a consistent state</strong>, since graceful shutdown includes fresh buffers to save information to disks, notify users and services, etc. <strong>However, intruders may have installed rootkits to destroy evidence</strong> upon receiving graceful shutdown command. You will lose volatile data, including the network state, such as network connections and arp tables, along with running processes, logged users, kernel and swap space contents.</p>
+<p><strong>If you shut down the system forcefully</strong> by yanking the power cord, it will <strong>avoid potential loss of evidence caused by rootkits</strong>. However, <strong>it may cost data in cache not written to disk, and leave data in a inconsistent state</strong>, and you will still lose volatile data.</p>
+<p><strong>From a forensic perspective, you should always yank the power cord, and you have to document every action.</strong></p>
+<p>The forensic procedure starts with establishing a detailed chain of custody. It is to maintain a record of how evidence has been handled, from the moment it was collected
+to the moment it was present to a court. Chain-of-custody items include date and the time the evidence was collected, full name and signature of each person possessing the evidence, and for how long, location and lockers for the evidence, and whether it was stored in a tamper-proof manner. You must document all activities and transfers of the evidences from one person to another person.</p>
+</div>
+</div>
+<div class="section" id="data-acquisition">
+<h2>Data Acquisition<a class="headerlink" href="#data-acquisition" title="Permalink to this headline">¶</a></h2>
+<p>With the chain of custody started, we begin the process of evidence acquisition, preservation, analysis, and reporting. Acquisition includes aquire both volatile and non-volatile data.</p>
+<p><strong>Volatile data</strong> requires power to maintain the stored information, like data in memory. Data stored on hard drives is a common example of <strong>non-volatile data</strong>. We always acquire volatile data first because they’re short-lived.</p>
+<p>When working on collecting evidence from a suspect machine, you have to make sure all output will be redirected outside of the suspect machine. Because otherwise you are tampering data. In a common practice, you will sanitize the evidence drive of the forensic machine before data acquisition.</p>
+<p>A bitstream copy gets every single bit of every byte on a device. It performs on the drive level, not on a file level, ignoring the end of file marker; therefore, this process is often called hard drive imaging, bitstream imaging, or forensic imaging. Commands such as CP copy, TA, cpio, dump, restore only copy file content, stopping at the end of file marker, the bitstream copy will copy every bit on the drive, including deleted data.</p>
+</div>
+<div class="section" id="data-preservation">
+<h2>Data Preservation<a class="headerlink" href="#data-preservation" title="Permalink to this headline">¶</a></h2>
+<p>Since courts require evidence be authentic and unaltered, the acquired digital evidence must be preserved in its original state. Forensics uses cryptographic hash algorithms to preserve evidence.</p>
+<p>Cryptographic hash algorithm is a one-way function that maps data of arbitrary size, like a message, to a fixed-size bitstream or called hash value. The same message always results in the same hash value. Here one-way means it is infeasible to reverse the mapping to generate a message from its hash value. A cryptographic hash should be a collision-free algorithm. That means it is functionally impossible to find two different messages with the same hash value. So if we want to prove or authorize that two hard drive images are identical, we only need to calculate their hashes. If the hashes are same, the two images have to be the same according to the collision-free property.</p>
+<p><a class="reference external" href="https://digital-forensics.sans.org/community/downloads">The SIFT Workstation</a> is for incident response and digital forensics use.</p>
+</div>
+<div class="section" id="data-analysis-and-report">
+<h2>Data Analysis and Report<a class="headerlink" href="#data-analysis-and-report" title="Permalink to this headline">¶</a></h2>
+<p>Whenever possible, you should protect the original physical evidence and only work with the digital copy.</p>
+<p>We start analysis by looking at the partition table on the suspect drive to learn the number of partitions on the drive and checking for gaps between partitions for hidden data. Other analysis steps include retrieving deleted files, generating a timeline based on timestamps and the log files, finding hidden data, keyword search for terms related to your case. <strong>Signature analysis</strong> to identify fake extensions. <strong>Hash analysis</strong> to filter out both innocent files and malicious files and OS specific media analysis.</p>
+<p>After completing the forensic examination with pertinent evidence and findings, the last step is to report your findings. As expert, you can always include your opinions in your report. For each opinion you offer, you have to provide supporting data from your analysis phase. Finally, conclude your report with your statements.</p>
 </div>
 </div>
 
