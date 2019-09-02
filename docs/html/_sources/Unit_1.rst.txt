@@ -40,7 +40,8 @@ If we turn the system off, we will lose computer memory and volatile data, such 
 
 **If you shut down the system forcefully** by yanking the power cord, it will **avoid potential loss of evidence caused by rootkits**. However, **it may cost data in cache not written to disk, and leave data in a inconsistent state**, and you will still lose volatile data.
 
-**From a forensic perspective, you should always yank the power cord, and you have to document every action.**
+.. note::
+        From a forensic perspective, you should **always shut down the system forcefully**, and you have to document every action.
 
 The forensic procedure starts with establishing a detailed chain of custody. It is to maintain a record of how evidence has been handled, from the moment it was collected
 to the moment it was present to a court. Chain-of-custody items include date and the time the evidence was collected, full name and signature of each person possessing the evidence, and for how long, location and lockers for the evidence, and whether it was stored in a tamper-proof manner. You must document all activities and transfers of the evidences from one person to another person.
@@ -61,7 +62,7 @@ A bitstream copy gets every single bit of every byte on a device. It performs on
 Data Preservation
 -----------------
 
-Since courts require evidence be authentic and unaltered, the acquired digital evidence must be preserved in its original state. Forensics uses cryptographic hash algorithms to preserve evidence.
+Since courts require evidence be authentic and unaltered, the acquired digital evidence must be preserved in its original state. **Forensics uses cryptographic hash algorithms to preserve evidence.**
 
 Cryptographic hash algorithm is a one-way function that maps data of arbitrary size, like a message, to a fixed-size bitstream or called hash value. The same message always results in the same hash value. Here one-way means it is infeasible to reverse the mapping to generate a message from its hash value. A cryptographic hash should be a collision-free algorithm. That means it is functionally impossible to find two different messages with the same hash value. So if we want to prove or authorize that two hard drive images are identical, we only need to calculate their hashes. If the hashes are same, the two images have to be the same according to the collision-free property.
 

@@ -182,7 +182,10 @@
 <p>If we turn the system off, we will lose computer memory and volatile data, such as logged-in users, PCP connections, and the running processes, etc. If possible, we should collect the volatile data before turning off the machine.</p>
 <p><strong>If you turn off the system gracefully</strong>, it ensures the <strong>system remains in a consistent state</strong>, since graceful shutdown includes fresh buffers to save information to disks, notify users and services, etc. <strong>However, intruders may have installed rootkits to destroy evidence</strong> upon receiving graceful shutdown command. You will lose volatile data, including the network state, such as network connections and arp tables, along with running processes, logged users, kernel and swap space contents.</p>
 <p><strong>If you shut down the system forcefully</strong> by yanking the power cord, it will <strong>avoid potential loss of evidence caused by rootkits</strong>. However, <strong>it may cost data in cache not written to disk, and leave data in a inconsistent state</strong>, and you will still lose volatile data.</p>
-<p><strong>From a forensic perspective, you should always yank the power cord, and you have to document every action.</strong></p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>From a forensic perspective, you should <strong>always shut down the system forcefully</strong>, and you have to document every action.</p>
+</div>
 <p>The forensic procedure starts with establishing a detailed chain of custody. It is to maintain a record of how evidence has been handled, from the moment it was collected
 to the moment it was present to a court. Chain-of-custody items include date and the time the evidence was collected, full name and signature of each person possessing the evidence, and for how long, location and lockers for the evidence, and whether it was stored in a tamper-proof manner. You must document all activities and transfers of the evidences from one person to another person.</p>
 </div>
@@ -196,7 +199,7 @@ to the moment it was present to a court. Chain-of-custody items include date and
 </div>
 <div class="section" id="data-preservation">
 <h2>Data Preservation<a class="headerlink" href="#data-preservation" title="Permalink to this headline">¶</a></h2>
-<p>Since courts require evidence be authentic and unaltered, the acquired digital evidence must be preserved in its original state. Forensics uses cryptographic hash algorithms to preserve evidence.</p>
+<p>Since courts require evidence be authentic and unaltered, the acquired digital evidence must be preserved in its original state. <strong>Forensics uses cryptographic hash algorithms to preserve evidence.</strong></p>
 <p>Cryptographic hash algorithm is a one-way function that maps data of arbitrary size, like a message, to a fixed-size bitstream or called hash value. The same message always results in the same hash value. Here one-way means it is infeasible to reverse the mapping to generate a message from its hash value. A cryptographic hash should be a collision-free algorithm. That means it is functionally impossible to find two different messages with the same hash value. So if we want to prove or authorize that two hard drive images are identical, we only need to calculate their hashes. If the hashes are same, the two images have to be the same according to the collision-free property.</p>
 <p><a class="reference external" href="https://digital-forensics.sans.org/community/downloads">The SIFT Workstation</a> is for incident response and digital forensics use.</p>
 </div>
