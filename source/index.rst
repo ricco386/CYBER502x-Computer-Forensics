@@ -3,8 +3,8 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-Welcome to RITx: CYBER502x Computer Forensics's notes!
-======================================================
+Welcome to RITx: CYBER502x Computer Forensics notes!
+====================================================
 
 This are my personal notes taken during the course `RITx: CYBER502x Computer Forensics <https://www.edx.org/course/computer-forensics/>`_ at `edx.org <https://www.edx.org/>`_.
 
@@ -18,6 +18,7 @@ Notes are written in `Sphinx <https://www.sphinx-doc.org/en/master/>`_ documenta
    :caption: Contents:
    
    Unit_1
+   Unit_2
 
 My personal notes from other `RITx Cybersecurity MicroMasters® Program <https://www.edx.org/micromasters/ritx-cybersecurity>`_ courses:
 
