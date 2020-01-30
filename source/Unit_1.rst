@@ -1,6 +1,9 @@
+.. _unit1:
+
 Unit 1 - Computer Forensics Fundamentals
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+.. _unit1_computer_forensics_concepts_and_types:
 
 Computer Forensics Concepts and Types
 -------------------------------------
@@ -25,11 +28,14 @@ Data can be in one of the three states:
 
 **Expert witness** present in court to judges, attorneys, juries, and other attendants to state their findings, opinions, and conclusions within the bounds of the trial.
 
+.. _unit1_forensic_investigation_procedure:
 
 Forensic Investigation Procedure
 --------------------------------
 
 When a computer incident is confirmed, forensic investigation starts. We should follow the company's incident response policies and procedures to decide whether turn off the suspect machine immediately or not.
+
+.. _unit1_should_we_turn_the_system_off:
 
 Should we turn the system off?
 ==============================
@@ -46,6 +52,7 @@ If we turn the system off, we will lose computer memory and volatile data, such 
 The forensic procedure starts with establishing a detailed chain of custody. It is to maintain a record of how evidence has been handled, from the moment it was collected
 to the moment it was present to a court. Chain-of-custody items include date and the time the evidence was collected, full name and signature of each person possessing the evidence, and for how long, location and lockers for the evidence, and whether it was stored in a tamper-proof manner. You must document all activities and transfers of the evidences from one person to another person.
 
+.. _unit1_data_acquisition:
 
 Data Acquisition
 ----------------
@@ -58,6 +65,7 @@ When working on collecting evidence from a suspect machine, you have to make sur
 
 A bitstream copy gets every single bit of every byte on a device. It performs on the drive level, not on a file level, ignoring the end of file marker; therefore, this process is often called hard drive imaging, bitstream imaging, or forensic imaging. Commands such as CP copy, TA, cpio, dump, restore only copy file content, stopping at the end of file marker, the bitstream copy will copy every bit on the drive, including deleted data.
 
+.. _unit1_data_preservation:
 
 Data Preservation
 -----------------
@@ -68,6 +76,7 @@ Cryptographic hash algorithm is a one-way function that maps data of arbitrary s
 
 `The SIFT Workstation <https://digital-forensics.sans.org/community/downloads>`_ is for incident response and digital forensics use.
 
+.. _unit1_data_analysis_and_report:
 
 Data Analysis and Report
 ------------------------

@@ -28,6 +28,7 @@ author = 'Richard von Kellner'
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
 extensions = [
+    'sphinx.ext.intersphinx'
 ]
 
 # Add any paths that contain templates here, relative to this directory.
@@ -51,3 +52,9 @@ html_theme = 'sphinx_rtd_theme'
 # relative to this directory. They are copied after the builtin static files,
 # so a file named "default.css" will overwrite the builtin "default.css".
 html_static_path = ['_static']
+
+intersphinx_mapping = {
+    'cyber501x': ('https://ricco386.github.io/CYBER501x-Cybersecurity-Fundamentals/html', None),
+    'cyber503x': ('https://ricco386.github.io/CYBER503x-Cybersecurity-Risk-Management/html', None),
+    'pen-test': ('https://ricco386.github.io/Penetration-testing/html', None),
+}

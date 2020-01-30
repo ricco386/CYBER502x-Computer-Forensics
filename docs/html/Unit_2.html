@@ -85,6 +85,7 @@
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Unit 2 - Linux/Unix Acquisition</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#acquisition-preparation-and-system-information-acquisition">Acquisition Preparation and System Information Acquisition</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#volatile-data-acquisition">Volatile data acquisition</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#collect-information-from-a-live-system">Collect information from a live system</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#memory-acquisition">Memory Acquisition</a></li>
@@ -155,9 +156,9 @@
            <div itemprop="articleBody">
             
   <div class="section" id="unit-2-linux-unix-acquisition">
-<h1>Unit 2 - Linux/Unix Acquisition<a class="headerlink" href="#unit-2-linux-unix-acquisition" title="Permalink to this headline">¶</a></h1>
+<span id="unit2"></span><h1>Unit 2 - Linux/Unix Acquisition<a class="headerlink" href="#unit-2-linux-unix-acquisition" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="acquisition-preparation-and-system-information-acquisition">
-<h2>Acquisition Preparation and System Information Acquisition<a class="headerlink" href="#acquisition-preparation-and-system-information-acquisition" title="Permalink to this headline">¶</a></h2>
+<span id="unit2-acquisition-preparation-and-system-information-acquisition"></span><h2>Acquisition Preparation and System Information Acquisition<a class="headerlink" href="#acquisition-preparation-and-system-information-acquisition" title="Permalink to this headline">¶</a></h2>
 <p>Linux/Unix forensics follows the general forensic process of <strong>collecting, preserving, analyzing, and reporting evidence</strong>.</p>
 <ol class="arabic">
 <li><p>First is a set of forensic tools, including a bootable live CD.</p>
@@ -169,15 +170,54 @@ When booting using a forensic bootable CD in forensic mode, the internal suspect
 </li>
 </ol>
 <div class="section" id="volatile-data-acquisition">
-<h3>Volatile data acquisition<a class="headerlink" href="#volatile-data-acquisition" title="Permalink to this headline">¶</a></h3>
+<span id="unit2-volatile-data-acquisition"></span><h3>Volatile data acquisition<a class="headerlink" href="#volatile-data-acquisition" title="Permalink to this headline">¶</a></h3>
 <p>Volatile evidence is evidence that can easily be changed. Every memory dump will be different since memory is constantly changing. That’s why we should first acquire the data that is most volatile.</p>
 <p>A possible order of collection from most volatile to least volatile until non-volatile is memory; swap space or page file; network status; connections; processes running; open files; drives, and removable media.</p>
 <p>Since you are directly collecting volatile evidence from a suspect machine, you are inevitably changing data. To ensure a minimal impact to the original data, you should always try to use small footprint tools and you should always document everything you have done.</p>
-<p>TODO: commands sample</p>
+</div>
+<div class="section" id="collect-information-from-a-live-system">
+<span id="unit2-collect-information-from-live-system"></span><h3>Collect information from a live system<a class="headerlink" href="#collect-information-from-a-live-system" title="Permalink to this headline">¶</a></h3>
+<p>On potentially compromised system we cannot trust anything, any tool from this machine. Use trusted tools from somewhere else, eg. a mounted USB.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>When we run any commands the output has to be saved to outside from potentially compromised machine, eg. a mounted USB.</p>
+</div>
+<p>On the beging of collecting evidence we store date, how long is the machine booted, logged in users and some basic information about the machine</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ date
+St jan 29 23:07:00 CET 2020
+$ uptime
+ 23:07:27 up 44 min,  2 users,  load average: 0,00, 0,02, 0,30
+$ uname -a
+Linux l430 5.3.16-300.fc31.x86_64 #1 SMP Fri Dec 13 17:59:04 UTC 2019 x86_64 x86_64 x86_64 GNU/Linux
+$ w
+ 18:06:00 up 21 days, 23:14,  1 user,  load average: 1,84, 1,27, 1,11
+USER     TTY        LOGIN@   IDLE   JCPU   PCPU WHAT
+ricco    tty2      08jan20 21days  0.05s  0.05s /usr/libexec/gnome-session-binary
+</pre></div>
+</div>
+<p id="network-interface-promisc-mode">Check the network interfaces information, and find out if any is switched to <strong>PROMISC mode</strong>. In promisc mode and it is listening for all the traffic passing through,
+even the <a class="reference external" href="https://ricco386.github.io/CYBER501x-Cybersecurity-Fundamentals/html/Unit_4.html#unit4-packets-routing" title="(in RITx: CYBER501x Cybersecurity Fundamentals - Personal study notes)"><span class="xref std std-ref">packets</span></a> is not destinate to this machine it will also collect. A compromised machine, might have promisc mode, so it will try to listening for everything it’s passed into this network.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ ifconfig
+</pre></div>
+</div>
+<p>List network connections and the <a class="reference external" href="https://ricco386.github.io/CYBER501x-Cybersecurity-Fundamentals/html/Unit_5.html#unit5-ports" title="(in RITx: CYBER501x Cybersecurity Fundamentals - Personal study notes)"><span>Ports</span></a> that are open:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ netstat -tulpen
+</pre></div>
+</div>
+<p>List processes running on the system:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ ps -eaf
+</pre></div>
+</div>
+<p>List of open files (with multiple variants):</p>
+<blockquote>
+<div><p>$ lsof -i 4  # list of open files all files opened with network connection
+$ lsof -p 2918  # list of open files for preocess 2918
+$ lsof +L1 # list of open files with link count less than 1, e.g. deleted files, not visible by ls (deleted), but still in memory</p>
+</div></blockquote>
 </div>
 </div>
 <div class="section" id="memory-acquisition">
-<h2>Memory Acquisition<a class="headerlink" href="#memory-acquisition" title="Permalink to this headline">¶</a></h2>
+<span id="unit2-memory-acquisition"></span><h2>Memory Acquisition<a class="headerlink" href="#memory-acquisition" title="Permalink to this headline">¶</a></h2>
 <p>For a host-based memory dump approach, the investigator needs to have physical access to the system. MEMDUMP is a part of the coroner’s toolkit, TCT. To overcome memdump limitations, open source tools, Linux Memory Extractor, LiME, and Fmem were developed. Both tools will load a kernel module to the system that allows full memory captures.</p>
 <p>A commercial tool called F-Response allows examiners to conduct forensic acquisition remotely. F-Response use a pair of dongles, one for the suspect system and another for the forensic system.</p>
 <p>TODO: memory dump sample and binary search</p>
