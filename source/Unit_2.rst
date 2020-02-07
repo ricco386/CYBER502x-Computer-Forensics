@@ -208,10 +208,3 @@ assuming `dd` copied successfully, the hash value of `hda` will be the same as t
 
 
 `dd` has siblings, `sdd`, and `dcfldd`. Both of them improved `dd`'s functionalities by achieving better performance and also providing copy progresses.
-
-
-
-
-
-
-

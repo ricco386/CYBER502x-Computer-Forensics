@@ -19,6 +19,7 @@ Notes are written in `Sphinx <https://www.sphinx-doc.org/en/master/>`_ documenta
    
    Unit_1
    Unit_2
+   Unit_3
 
 My personal notes from other `RITx Cybersecurity MicroMasters® Program <https://www.edx.org/micromasters/ritx-cybersecurity>`_ courses:
 
