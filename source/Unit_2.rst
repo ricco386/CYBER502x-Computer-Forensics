@@ -108,11 +108,13 @@ Memory Acquisition
 ==================
 
 For a host-based memory dump approach, the investigator needs to have physical access to the system. MEMDUMP is a part of the coroner's toolkit, TCT. To overcome memdump limitations, open source tools, Linux Memory Extractor, 
-`LiME <https://github.com/504ensicslabs/lime>_`, and Fmem were developed. Both tools will load a kernel module to the system that allows full memory captures.
+`LiME <https://github.com/504ensicslabs/lime>`_, and Fmem were developed. Both tools will load a kernel module to the system that allows full memory captures.
 
 A commercial tool called F-Response allows examiners to conduct forensic acquisition remotely. F-Response use a pair of dongles, one for the suspect system and another for the forensic system.
 
-We need to have trusted tools available on a suspected machine. Insert mod and then the module name certainly is the `LiME <https://github.com/504ensicslabs/lime>_` module we are interested. 
+.. _command_lime:
+
+We need to have trusted tools available on a suspected machine. Insert mod and then the module name certainly is the `LiME <https://github.com/504ensicslabs/lime>`_ module we are interested. 
 We want to insert this module into the kernel and the path specifies where this image dump will be reside:
 
 .. sourcecode::
