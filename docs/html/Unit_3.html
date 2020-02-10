@@ -85,6 +85,15 @@
 <li class="toctree-l1"><a class="reference internal" href="Unit_2.html">Unit 2 - Linux/Unix Acquisition</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Unit 3 - Unix/Linux File System</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#booting-process">Booting Process</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#linux-unix-file-systems">Linux/Unix File Systems</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#sleuthkit-and-autopsy">Sleuthkit and Autopsy</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#the-physical-layer">The physical layer</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#the-data-layer">The data layer</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#the-metadata-layer">The metadata layer</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#the-file-system-layer">The file system layer</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#the-file-name-layer">The file name layer</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -155,6 +164,208 @@
 <span id="unit3"></span><h1>Unit 3 - Unix/Linux File System<a class="headerlink" href="#unit-3-unix-linux-file-system" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="booting-process">
 <span id="unit3-booting-process"></span><h2>Booting Process<a class="headerlink" href="#booting-process" title="Permalink to this headline">¶</a></h2>
+<p id="mbr">The BIOS and MBR partitioning scheme was developed in the early 1980’s by IBM Personal Computers. The basic
+input/output system short for BIOS starts power on self-test. Searches, loads, and executes the boot loader following
+the BIOS boot sequence.</p>
+<p>Commonly, BIOS loads and executes the master boot record, boot loader. MBR is always located in sector zero of
+the drive and it contains the initial boot code and the disk partition information.</p>
+<p>MBR is always 512 bytes and it is created when the disk is partitioned. The MBR contains 446 bytes of executable code
+called master boot code. Two bytes of the MBR signature and the 64-bytes partition table information.</p>
+<p>The MBR signature is always set to the hex 55AA, which marks the end of MBR. If you add those bytes together,
+446 plus 64 plus 2, you will end up get 512 bytes in total.</p>
+<p>The disk signature, a unique number at offset 01B8 identifies the disk to the operating system.</p>
+<p>The partition table contains four primary partition entries. Each partition entry uses 16 bytes to specify the starting
+and ending position in cylinder-head-sector for each partition as well as the active flag indicating whether
+the partition is active for booting or not.</p>
+<p>Once it has identified the active partition, MBR will load a copy of the boot sector from the active partition into
+memory and transfer control to the executable code in the boot sector of the active partition.</p>
+<p id="efi">In the 1990’s, Intel introduced EFI boot framework. EFI stands for extensible firmware interface to especially support
+larger disk spaces. EFI uses globally unique identification partition known as GPT and jumps to EFI system partition
+to begin the initial boot strapping.</p>
+<p>While MBR can only have four primary partitions, GPT can support up to 128 primary partitions on a GPT disk.</p>
+</div>
+<div class="section" id="linux-unix-file-systems">
+<span id="unit3-linux-file-systems"></span><h2>Linux/Unix File Systems<a class="headerlink" href="#linux-unix-file-systems" title="Permalink to this headline">¶</a></h2>
+<p>When a partition has a file system installed, the partition has an organized structure for files. This is basically
+what the file system is for.</p>
+<p id="superblock"><span id="ext-filesystem"></span>Linux EXT file systems are derived from the UNIX file system. When an EXT file system is installed, the partition
+contains an optional boot block and superblock. The superblock defines the data structures and the boundaries of this
+file system.</p>
+<p>The superblock defines the data structures and the boundaries of this file system. The information in superblock
+includes block size, in Linux UNIX file systems, a block is the smallest unit to store information. Like the block size,
+the number of blocks in a group is fixed when the file system is created.</p>
+<p>It also includes block and INODE bitmap. The bitmap contains zero and one. One means the block or INODE is in use.
+The number of free blocks and the number of free INODE in the file system is also recorded in superblock.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If the block size is 1024 bytes, a file with 8 bytes will have to use one block.</p>
+</div>
+<p id="inode">The first INODE in EXT2, 3, 4 file system is the INODE for the system root directory. It is clear that data is saved
+in blocks, but what is really INODE for? INODE contains metadata information about a file.</p>
+<p>In Linux UNIX systems, each file has a correspondent INODE. However, multiple files may share a same INODE. <strong>The number
+of files pointed to the same INODE is called a link count.</strong> The metadata stored in INODE includes file type, owner,
+file permissions, file’s last modification, access, and INODE changing times, link count, and the file’s data block
+addresses that store the actual file contents.</p>
+<p>The content of a directory is a list of directories representing files and subdirectories that reside in this directory.
+Each entry contains a file directory name and its correspondent item number. Therefore, the mapping information between
+INODE number and the file name is stored in a directory.</p>
+<p>Directory example:</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 51%" />
+<col style="width: 27%" />
+<col style="width: 22%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p>Byte offset in directory</p></td>
+<td><p>Inode number</p></td>
+<td><p>File name</p></td>
+</tr>
+<tr class="row-even"><td><p>0</p></td>
+<td><p>70</p></td>
+<td><p>.</p></td>
+</tr>
+<tr class="row-odd"><td><p>16</p></td>
+<td><p>35</p></td>
+<td><p>..</p></td>
+</tr>
+<tr class="row-even"><td><p>32</p></td>
+<td><p>123</p></td>
+<td><p>file1</p></td>
+</tr>
+<tr class="row-odd"><td><p>48</p></td>
+<td><p>345</p></td>
+<td><p>file2</p></td>
+</tr>
+<tr class="row-even"><td><p>64</p></td>
+<td><p>90</p></td>
+<td><p>file3</p></td>
+</tr>
+</tbody>
+</table>
+<p>Walkthrought to locate content of the file <cite>/etc/myconfig</cite></p>
+<p>The file names start with slash. From the superblock, we have the information of the first INODE number correspondent
+to slash. Let’s assume it is INODE zero.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">-----------------</span>
+<span class="o">|</span> <span class="n">inode</span> <span class="mi">0</span> <span class="o">...</span> <span class="o">/</span> <span class="o">|</span>
+<span class="o">|</span>               <span class="o">|</span>
+<span class="o">|</span>               <span class="o">|</span>
+<span class="o">|</span>               <span class="o">|</span>
+<span class="o">-----------------</span>
+</pre></div>
+</div>
+<p>We read the information stored in INODE zero, since it is a directory, you will find out the INODE type is directory
+and you will get data block addresses for slash for INODE zero’s content.</p>
+<p>Go to slash data block addresses. It contains the list of files and subdirs contained in slash. Subdir etc along with
+its correspondent INODE number should be in this list. If not, it will display an error message of cannot locate
+<cite>/etc/myconfig</cite>.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">-----------------</span>         <span class="o">-----------------------</span>
+<span class="o">|</span> <span class="n">inode</span> <span class="mi">0</span> <span class="o">...</span> <span class="o">/</span> <span class="o">|---</span> <span class="o">/</span> <span class="o">---|</span> <span class="n">inode</span> <span class="mi">12</span> <span class="o">...</span> <span class="n">foo</span>    <span class="o">|</span>
+<span class="o">|</span>               <span class="o">|</span>         <span class="o">|</span> <span class="n">inode</span> <span class="mi">13</span> <span class="o">...</span> <span class="n">etc</span>    <span class="o">|</span>
+<span class="o">|</span>               <span class="o">|</span>         <span class="o">|</span> <span class="n">inode</span> <span class="mi">14</span> <span class="o">...</span> <span class="n">db</span><span class="o">.</span><span class="n">csv</span> <span class="o">|</span>
+<span class="o">|</span>               <span class="o">|</span>         <span class="o">|</span> <span class="o">...</span>                 <span class="o">|</span>
+<span class="o">-----------------</span>         <span class="o">-----------------------</span>
+</pre></div>
+</div>
+<p>Since <cite>/etc</cite> is a directory, you will find out the INODE type is directory and then you will get the data block
+addresses for <cite>/etc</cite>.</p>
+<p>Go to the data block addresses of <cite>/etc</cite>. Because it is a directory, it contains a list of files and subdirectories
+that reside in <cite>/etc</cite>. File name <cite>myconfig</cite> along with its correspondent INODE number should be in this list. If not,
+again, error message will be displayed.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">-----------------</span>         <span class="o">-----------------------</span>           <span class="o">--------------------------</span>
+<span class="o">|</span> <span class="n">inode</span> <span class="mi">0</span> <span class="o">...</span> <span class="o">/</span> <span class="o">|---</span> <span class="o">/</span> <span class="o">---|</span> <span class="n">inode</span> <span class="mi">12</span> <span class="o">...</span> <span class="n">foo</span>    <span class="o">|</span>           <span class="o">|</span> <span class="n">inode</span> <span class="mi">20</span> <span class="o">...</span> <span class="n">misc</span>      <span class="o">|</span>
+<span class="o">|</span>               <span class="o">|</span>         <span class="o">|</span> <span class="n">inode</span> <span class="mi">13</span> <span class="o">...</span> <span class="n">etc</span>    <span class="o">|---</span> <span class="n">etc</span> <span class="o">---|</span> <span class="n">inode</span> <span class="mi">21</span> <span class="o">...</span> <span class="n">stuff</span><span class="o">.</span><span class="n">txt</span> <span class="o">|</span>
+<span class="o">|</span>               <span class="o">|</span>         <span class="o">|</span> <span class="n">inode</span> <span class="mi">14</span> <span class="o">...</span> <span class="n">db</span><span class="o">.</span><span class="n">csv</span> <span class="o">|</span>           <span class="o">|</span> <span class="n">inode</span> <span class="mi">22</span> <span class="o">...</span> <span class="n">myconfig</span>  <span class="o">|</span>
+<span class="o">|</span>               <span class="o">|</span>         <span class="o">|</span> <span class="o">...</span>                 <span class="o">|</span>           <span class="o">|</span> <span class="o">...</span>                    <span class="o">|</span>
+<span class="o">-----------------</span>         <span class="o">-----------------------</span>           <span class="o">--------------------------</span>
+</pre></div>
+</div>
+<p>Knowing the INODE number of <cite>/etc/myconfig</cite>, we will read this INODE’s content. Since <cite>/etc/myconfig</cite> is a regular file,
+you will find out the INODE type is file. And you will get the data block addresses for this file. Go to the data
+block addresses of <cite>/etc/myconfig</cite>. Because it is a regular file, we will have the file content in the data block.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">-----------------------</span>           <span class="o">--------------------------</span>                <span class="o">----------------</span>
+<span class="o">|</span> <span class="n">inode</span> <span class="mi">12</span> <span class="o">...</span> <span class="n">foo</span>    <span class="o">|</span>           <span class="o">|</span> <span class="n">inode</span> <span class="mi">20</span> <span class="o">...</span> <span class="n">misc</span>      <span class="o">|</span>                <span class="o">|</span> <span class="n">file</span> <span class="n">block</span> <span class="mi">1</span> <span class="o">|</span>
+<span class="o">|</span> <span class="n">inode</span> <span class="mi">13</span> <span class="o">...</span> <span class="n">etc</span>    <span class="o">|---</span> <span class="n">etc</span> <span class="o">---|</span> <span class="n">inode</span> <span class="mi">21</span> <span class="o">...</span> <span class="n">stuff</span><span class="o">.</span><span class="n">txt</span> <span class="o">|</span>                <span class="o">|</span> <span class="n">file</span> <span class="n">block</span> <span class="mi">2</span> <span class="o">|</span>
+<span class="o">|</span> <span class="n">inode</span> <span class="mi">14</span> <span class="o">...</span> <span class="n">db</span><span class="o">.</span><span class="n">csv</span> <span class="o">|</span>           <span class="o">|</span> <span class="n">inode</span> <span class="mi">22</span> <span class="o">...</span> <span class="n">myconfig</span>  <span class="o">|---</span> <span class="n">myconfig</span> <span class="o">---|</span> <span class="n">file</span> <span class="n">block</span> <span class="mi">3</span> <span class="o">|</span>
+<span class="o">|</span> <span class="o">...</span>                 <span class="o">|</span>           <span class="o">|</span> <span class="o">...</span>                    <span class="o">|</span>                <span class="o">|</span> <span class="o">...</span>          <span class="o">|</span>
+<span class="o">-----------------------</span>           <span class="o">--------------------------</span>                <span class="o">----------------</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Recovering a deleted EXT3 file is difficult, due to the way EXT file system locates file content based on a file name.</p>
+</div>
+<p>Can we retrieve the deleted file even though the OS will not help us?</p>
+<p>The answer varies depending on file systems implementations. For example, Microsoft’s FAT file system will mark the file
+as deleted by renaming the file name. The Berkeley Fast File System usually breaks all the connections between
+directory entry and the file data blocks.</p>
+<p><strong>When we create a new file on EXT file system, each file has its content stored in blocks, its metadata stored in
+INODE, and its file name and INODE mapping stored in its parent directory.</strong> When a new file (not a hotlink) is created,
+a free INODE is chosen from the INODE bitmap. The superblock free INODE values are decremented by one. An entry is
+added in the parent directory. Free data blocks are chosen from the block bitmap to store the file content. Finally,
+the INODE content is viewed.</p>
+<p><strong>When a file is deleted in EXT2 file system, the data blocks in the block bitmap are marked as free. The INODE in
+INODE bitmap is marked as free. The director entry is marked as unused.</strong> The connections among directory entry, INODE,
+and the file data blocks will still be there until they are overwritten.</p>
+<p>Therefore, if the directory entry information is still available, you still can find the mapping between the file name
+and its INODE. If the INODE has not been overwritten yet, you can even find the file’s metadata, including permissions
+and data blocks. Therefore, even though the file has been deleted, it is still possible to recover the file content
+if the data blocks are not overwritten.</p>
+<p>For EXT3 and EXT4 file systems, the file size in INODE is set to zero. More destructively, the data block information
+in the INODE is cleared upon file deletion, which means we are not able to link the INODE to the file content even if
+the content is still intact. <strong>Data recoveries from EXT3 and 4 file systems are harder, but may still be possible.</strong></p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Deleted data still exists on disk and are recoverable until space is overwritten. In addition, larger disks are less
+likely to overwrite formerly used space unless the disk blocks are wiped after file is deleted.</p>
+</div>
+<p>Both Linux,UNIX commands <a class="reference external" href="https://en.wikipedia.org/wiki/Srm_(Unix)">srm</a> or
+<a class="reference external" href="https://en.wikipedia.org/wiki/Shred_(Unix)">shred</a> will intentionally destroy file content.</p>
+</div>
+<div class="section" id="sleuthkit-and-autopsy">
+<span id="autopsy"></span><span id="sleuthkit"></span><h2>Sleuthkit and Autopsy<a class="headerlink" href="#sleuthkit-and-autopsy" title="Permalink to this headline">¶</a></h2>
+<p>Sleuth Kit supports almost all file systems. Autopsy is the GUI front end for Sleuth Kit. Sleuth Kit view the
+file system in five layers and it contains tools for each layer except for the physical layer.</p>
+<div class="section" id="the-physical-layer">
+<h3>The physical layer<a class="headerlink" href="#the-physical-layer" title="Permalink to this headline">¶</a></h3>
+<p>It uses magnetic hard disks and then solid state drives to physically store data.</p>
+<p>Magnetic hard disks operate by creating or detecting magnetic fields in fixed regions or blocks of a magnetic surface.
+When the disk is asked to write to a particularly block, it spins and moves its head to a certain location and
+magnetize the magnetic surface of the disk in that region. If there is already old discarded data in that location,
+the data is automatically converted or overwritten to the new values.</p>
+<p>Solid state drives, on the other hand, have no moving mechanical components. Data is stored in fixed arrangements of
+electronic transistors. A couple of SSD properties will affect forensic analysis.</p>
+<p>Data rewrite requires blocks to be erased electronically before they can be used again. The write over old data
+property of magnetic disks does not work in SDD. To increase performance for writing, a technology called garbage
+collection was built into SSD computers to help automatically reset the used data blocks back to free space. The
+garbage collection process will erase old data, so recovering deleted data will be affected to some degree in SDD.</p>
+</div>
+<div class="section" id="the-data-layer">
+<h3>The data layer<a class="headerlink" href="#the-data-layer" title="Permalink to this headline">¶</a></h3>
+<p>It uses blocks or clusters to store data. Cluster is a Windows term for block.</p>
+</div>
+<div class="section" id="the-metadata-layer">
+<h3>The metadata layer<a class="headerlink" href="#the-metadata-layer" title="Permalink to this headline">¶</a></h3>
+<p>It contains a file’s metadata information. For example, INODE information.</p>
+</div>
+<div class="section" id="the-file-system-layer">
+<h3>The file system layer<a class="headerlink" href="#the-file-system-layer" title="Permalink to this headline">¶</a></h3>
+<p>It describes the file system structure details such as information in super block.</p>
+</div>
+<div class="section" id="the-file-name-layer">
+<h3>The file name layer<a class="headerlink" href="#the-file-name-layer" title="Permalink to this headline">¶</a></h3>
+<p>It associates a file name to its metadata structure.</p>
+<p>We can break Sleuth Kit into four sets of tools:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>File system layer tools start with FS.</p></li>
+<li><p>File name layer tools start with F.</p></li>
+<li><p>Metadata layer tools start with I.</p></li>
+<li><p>Data layer tools start with BLK, which is block.</p></li>
+</ul>
+</div></blockquote>
+<p><strong>TODO: Video commands</strong></p>
+</div>
 </div>
 </div>
 

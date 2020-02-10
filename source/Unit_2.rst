@@ -68,7 +68,7 @@ even the :ref:`packets <cyber501x:unit4_packets_routing>` is not destinate to th
 
     $ ifconfig
 
-.. _command_netstat:
+.. _netstat:
 
 List network connections and the :ref:`cyber501x:unit5_ports` that are open:
 
@@ -76,7 +76,7 @@ List network connections and the :ref:`cyber501x:unit5_ports` that are open:
 
     $ netstat -tulpen
 
-.. _command_ps:
+.. _ps:
 
 List processes running on the system:
 
@@ -84,7 +84,7 @@ List processes running on the system:
 
     $ ps -eaf
 
-.. _command_lsof:
+.. _lsof:
 
 List of open files (with multiple variants):
 
@@ -112,7 +112,7 @@ For a host-based memory dump approach, the investigator needs to have physical a
 
 A commercial tool called F-Response allows examiners to conduct forensic acquisition remotely. F-Response use a pair of dongles, one for the suspect system and another for the forensic system.
 
-.. _command_lime:
+.. _lime:
 
 We need to have trusted tools available on a suspected machine. Insert mod and then the module name certainly is the `LiME <https://github.com/504ensicslabs/lime>`_ module we are interested. 
 We want to insert this module into the kernel and the path specifies where this image dump will be reside:
@@ -128,7 +128,7 @@ Once the dump is finished, we need to do a cleanup. First remove the lime module
     $ lsmod | grep lime
     $ rmmod lime
 
-.. _command_strings:
+.. _strings:
 
 We'll have `memory_dump.bin` in out safe directory, eg. on a mounted USB. It's a binary file. We want to try a very simple tool called a `strings`, it is able to print out certain lengths of strings, the lengths 
 by default is greater not equal to 4 bytes. Lets do a search in the memory dump for the string greater than 8 bytes and starting with the word forensics:
@@ -154,7 +154,7 @@ There are many high speed forensic images in the market. High speed forensic ima
 `dd` can also be used to create a bit-stream copy of drives. However, you will need a write blocker to separate the original drives from the imaging software to prevent software from modifying data in original drives. 
 Most of these imaging tools will generate the hash value automatically after the imaging is done.
 
-.. _command_dd:
+.. _dd:
 
 `dd` reads input blocks one at a time from block level device and it puts them into a memory buffer, applies the selected conversions, then outputs from buffer to the desired location, with a default block size of 512 bytes.
 

@@ -207,15 +207,15 @@ even the <a class="reference external" href="https://ricco386.github.io/CYBER501
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ ifconfig
 </pre></div>
 </div>
-<p id="command-netstat">List network connections and the <a class="reference external" href="https://ricco386.github.io/CYBER501x-Cybersecurity-Fundamentals/html/Unit_5.html#unit5-ports" title="(in RITx: CYBER501x Cybersecurity Fundamentals - Personal study notes)"><span>Ports</span></a> that are open:</p>
+<p id="netstat">List network connections and the <a class="reference external" href="https://ricco386.github.io/CYBER501x-Cybersecurity-Fundamentals/html/Unit_5.html#unit5-ports" title="(in RITx: CYBER501x Cybersecurity Fundamentals - Personal study notes)"><span>Ports</span></a> that are open:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ netstat -tulpen
 </pre></div>
 </div>
-<p id="command-ps">List processes running on the system:</p>
+<p id="ps">List processes running on the system:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ ps -eaf
 </pre></div>
 </div>
-<p id="command-lsof">List of open files (with multiple variants):</p>
+<p id="lsof">List of open files (with multiple variants):</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ lsof -i 4  # list of open files all files opened with network connection
 $ lsof -p 2918  # list of open files for preocess 2918
 $ lsof +L1 # list of open files with link count less than 1, e.g. deleted files, not visible by ls (deleted), but still in memory
@@ -242,7 +242,7 @@ We want to insert this module into the kernel and the path specifies where this 
 $ rmmod lime
 </pre></div>
 </div>
-<p id="command-strings">We’ll have <cite>memory_dump.bin</cite> in out safe directory, eg. on a mounted USB. It’s a binary file. We want to try a very simple tool called a <cite>strings</cite>, it is able to print out certain lengths of strings, the lengths
+<p id="strings">We’ll have <cite>memory_dump.bin</cite> in out safe directory, eg. on a mounted USB. It’s a binary file. We want to try a very simple tool called a <cite>strings</cite>, it is able to print out certain lengths of strings, the lengths
 by default is greater not equal to 4 bytes. Lets do a search in the memory dump for the string greater than 8 bytes and starting with the word forensics:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ strings -n 8 /mnt/evidence_folder/memory_dump.bin | grep ^forensics
 </pre></div>
@@ -257,7 +257,7 @@ by default is greater not equal to 4 bytes. Lets do a search in the memory dump 
 <p>There are many high speed forensic images in the market. High speed forensic images can copy up to 30 gigabytes per minute and usually have built-in write blocker functionalities. Software-based imaging tools like <cite>FTK Imager</cite> and
 <cite>dd</cite> can also be used to create a bit-stream copy of drives. However, you will need a write blocker to separate the original drives from the imaging software to prevent software from modifying data in original drives.
 Most of these imaging tools will generate the hash value automatically after the imaging is done.</p>
-<p id="command-dd"><cite>dd</cite> reads input blocks one at a time from block level device and it puts them into a memory buffer, applies the selected conversions, then outputs from buffer to the desired location, with a default block size of 512 bytes.</p>
+<p id="dd"><cite>dd</cite> reads input blocks one at a time from block level device and it puts them into a memory buffer, applies the selected conversions, then outputs from buffer to the desired location, with a default block size of 512 bytes.</p>
 <p>To copy our physical device data, we simply use <cite>dd</cite> to move chunks of bits from a source device to a destination device, ignoring the end of file marker. <cite>dd</cite> copies metadata and the data blocks in their entirety.
 <cite>dd</cite> can redirect by pipe to netcat or other applications to send the data to a networked machine.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ dd if=/source/file of=/destination/file
